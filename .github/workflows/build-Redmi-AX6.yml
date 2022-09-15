@@ -50,7 +50,7 @@ jobs:
 
     - name: Clone source code
       run: |
-        git clone https://github.com/coolsnowwolf/lede lede
+        git clone https://github.com/Cathgao/openwrt lede
 
     - name: Cache
       uses: klever1988/cachewrtbuild@main
