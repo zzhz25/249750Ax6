@@ -25,20 +25,13 @@ jobs:
         echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
         echo "-------------------------------内存信息-------------------------------------------"
         echo "已安装内存详细信息："
-        sudo lshw -short -C memory | grep GiB
+        lshw -short -C memory | grep GiB
         echo -e "\n"
         echo "-----------------------------硬盘信息---------------------------------------------"
         echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
         echo "硬盘详情："
         df -Th
-    - name: Initialization environment
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        docker rmi `docker images -q`
-        sudo -E apt-get update
-        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler u-boot-tools gcc-multilib g++-multilib antlr3 gperf
-        sudo -E apt-get -y autoremove --purge
+
     - name: Clone source code
       run: |
         git clone https://github.com/Cathgao/openwrt lede
