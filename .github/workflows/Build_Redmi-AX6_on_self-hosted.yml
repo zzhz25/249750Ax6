@@ -1,0 +1,87 @@
+#=================================================
+#   Description: Build Redmi-AX6 FROM LEAN'S LEDE
+#   Author: JK/Cath
+#=================================================
+
+name: Build Redmi-AX6 on self-hosted
+
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: self-hosted
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Check server performance
+      run: |
+        echo "警告"
+        echo "若分配的服务器性能不足，务必及时取消，重新运行！"
+        echo "已知编译成功CPU型号：8370C,8171M"
+        echo "已知性能不足CPU型号：8272CL"
+        echo -e "-------------- ------------CPU信息------------------------------------------\n"
+        echo "CPU物理数量:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+        echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+        echo "-------------------------------内存信息-------------------------------------------"
+        echo "已安装内存详细信息："
+        sudo lshw -short -C memory | grep GiB
+        echo -e "\n"
+        echo "-----------------------------硬盘信息---------------------------------------------"
+        echo -e  "硬盘数量：$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+        echo "硬盘详情："
+        df -Th
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E apt-get update
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler u-boot-tools gcc-multilib g++-multilib antlr3 gperf
+        sudo -E apt-get -y autoremove --purge
+    - name: Clone source code
+      run: |
+        git clone https://github.com/Cathgao/openwrt lede
+    - name: Cache
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}/lede
+
+    - name: enable magic
+      run: |
+        cd lede 
+        echo 'src-git helloworld https://github.com/fw876/helloworld'>>./feeds.conf.default
+        echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+        sed -i '$a src-git-full kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+        sed -i '$a src-git-full small https://github.com/kenzok8/small' feeds.conf.default
+    - name: Update feeds
+      run: cd lede && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd lede && ./scripts/feeds install -a
+
+    - name: Load custom configuration
+      run: |
+        cp -f ax6-5.10.config ./lede/.config
+        chmod +x diy.sh
+        cd lede
+        ../diy.sh
+        make defconfig
+    - name: Download package
+      run: |
+        echo -e "$(nproc) thread build."
+        cd lede && make download -j$(nproc)
+        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config; make defconfig
+        
+    - name: Build
+      run: |
+        cd lede
+        echo -e "$(nproc) thread build."
+        make -j$(nproc) V=s
+        rm -rf ./bin/targets/ipq807x/generic/packages
+    - name : Upload artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: Redmi-AX6
+        path: ./lede/bin/targets/ipq807x/generic/
