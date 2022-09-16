@@ -35,12 +35,7 @@ jobs:
     - name: Clone source code
       run: |
         git clone https://github.com/Cathgao/openwrt lede
-    - name: Cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        prefix: ${{ github.workspace }}/lede
-
+        
     - name: enable magic
       run: |
         cd lede 
@@ -65,7 +60,6 @@ jobs:
       run: |
         echo -e "$(nproc) thread build."
         cd lede && make download -j$(nproc)
-        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config; make defconfig
         
     - name: Build
       run: |
