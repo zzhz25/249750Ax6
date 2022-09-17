@@ -13,6 +13,7 @@ on:
       - main
   schedule:
     - cron: 0 9 * * */2
+  workflow_call:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,20 +24,20 @@ jobs:
 
     - name: Check server performance
       run: |
-        echo "¾¯¸æ?"
-        echo "Èô·ÖÅäµÄ·şÎñÆ÷ĞÔÄÜ²»×ã£¬Îñ±Ø¼°Ê±È¡Ïû£¬ÖØĞÂÔËĞĞ£¡"
-        echo "ÒÑÖª±àÒë³É¹¦CPUĞÍºÅ£º8370C,8171M"
-        echo "ÒÑÖªĞÔÄÜ²»×ãCPUĞÍºÅ£º8272CL"
-        echo -e "-------------- ------------CPUĞÅÏ¢------------------------------------------\n"
-        echo "CPUÎïÀíÊıÁ¿:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
-        echo -e "CPUºËĞÄ¼°°æ±¾ĞÅÏ¢£º$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
-        echo "-------------------------------ÄÚ´æĞÅÏ¢-------------------------------------------"
-        echo "ÒÑ°²×°ÄÚ´æÏêÏ¸ĞÅÏ¢£º"
+        echo "è­¦å‘Šï¼"
+        echo "è‹¥åˆ†é…çš„æœåŠ¡å™¨æ€§èƒ½ä¸è¶³ï¼ŒåŠ¡å¿…åŠæ—¶å–æ¶ˆï¼Œé‡æ–°è¿è¡Œï¼"
+        echo "å·²çŸ¥ç¼–è¯‘æˆåŠŸCPUå‹å·ï¼š8370C,8171M"
+        echo "å·²çŸ¥æ€§èƒ½ä¸è¶³CPUå‹å·ï¼š8272CL"
+        echo -e "-------------- ------------CPUä¿¡æ¯------------------------------------------\n"
+        echo "CPUç‰©ç†æ•°é‡:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
+        echo -e "CPUæ ¸å¿ƒåŠç‰ˆæœ¬ä¿¡æ¯ï¼š$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+        echo "-------------------------------å†…å­˜ä¿¡æ¯-------------------------------------------"
+        echo "å·²å®‰è£…å†…å­˜è¯¦ç»†ä¿¡æ¯ï¼š"
         sudo lshw -short -C memory | grep GiB
         echo -e "\n"
-        echo "-----------------------------Ó²ÅÌĞÅÏ¢---------------------------------------------"
-        echo -e  "Ó²ÅÌÊıÁ¿£º$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
-        echo "Ó²ÅÌÏêÇé£º"
+        echo "-----------------------------ç¡¬ç›˜ä¿¡æ¯---------------------------------------------"
+        echo -e  "ç¡¬ç›˜æ•°é‡ï¼š$(ls /dev/sd* | grep -v [1-9] | wc -l) \n"
+        echo "ç¡¬ç›˜è¯¦æƒ…ï¼š"
         df -Th
 
     - name: Initialization environment
