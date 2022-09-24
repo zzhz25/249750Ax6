@@ -75,7 +75,7 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        cp -f ax6-5.10.config ./lede/.config
+        cp .config ./lede/.config
         chmod +x diy.sh
         cd lede
         ../diy.sh
