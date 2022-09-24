@@ -92,7 +92,7 @@ jobs:
       run: |
         cd lede
         echo -e "$(nproc) thread build."
-        make -j$(nproc) V=s
+        make -j$(nproc) 
         rm -rf ./bin/targets/ipq807x/generic/packages
 
     - name : Upload artifact
