@@ -53,11 +53,11 @@ jobs:
       run: |
         git clone https://github.com/Cathgao/openwrt lede
 
-    #- name: Cache
-     # uses: klever1988/cachewrtbuild@main
-     # with:
-      #  ccache: 'true'
-       # prefix: ${{ github.workspace }}/lede
+    - name: Cache
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}/lede
 
     - name: enable magic
       run: |
