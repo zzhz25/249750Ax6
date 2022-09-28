@@ -24,20 +24,19 @@ sed -i 's/encryption=none/encryption=sae-mixed/g' package/kernel/mac80211/files/
 sed -i '/set wireless.default_radio${devidx}.encryption=sae-mixed/a\set wireless.default_radio${devidx}.key=password' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 
 echo '增加schedutil调速器'
-sed -i '/CONFIG_CPU_FREQ_GOV_ONDEMAND=y/a\CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y' target/linux/ipq807x/config-5.10
-sed -i 's/# CONFIG_CPU_FREQ_GOV_POWERSAVE is not set/CONFIG_CPU_FREQ_GOV_POWERSAVE=y/g' target/linux/ipq807x/config-5.10
-sed -i 's/# CONFIG_CPU_FREQ_STAT is not set/CONFIG_CPU_FREQ_STAT=y/g' target/linux/ipq807x/config-5.10
-
-
+sed -i '/CONFIG_CPU_FREQ_GOV_ONDEMAND=y/a\CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y' target/linux/ipq807x/config-5.15
+sed -i 's/# CONFIG_CPU_FREQ_GOV_POWERSAVE is not set/CONFIG_CPU_FREQ_GOV_POWERSAVE=y/g' target/linux/ipq807x/config-5.15
+sed -i 's/# CONFIG_CPU_FREQ_STAT is not set/CONFIG_CPU_FREQ_STAT=y/g' target/linux/ipq807x/config-5.15
+sed -i '/CONFIG_CPU_FREQ_GOV_ONDEMAND=y/a\CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y' target/linux/ipq807x/Makefile
 #echo '去除默认bootstrap主题'
 #sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 
 #echo '删除旧版argon,链接新版'
-#rm -rf ./package/lean/luci-theme-argon
-#git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon ../diy/luci-theme-argon
-#git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config ../diy/luci-app-argon-config
-#ln -s ../../../luci-theme-argon ./package/lean/
+rm -rf ./package/lean/luci-theme-argon
+git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon ../diy/luci-theme-argon
+git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config ../diy/luci-app-argon-config
+ln -s ../../../luci-theme-argon ./package/lean/
 
 echo '下载ServerChan'
 git clone https://github.com/tty228/luci-app-serverchan ../diy/luci-app-serverchan
@@ -45,10 +44,10 @@ git clone https://github.com/tty228/luci-app-serverchan ../diy/luci-app-serverch
 #echo '下载AdGuard Home'
 #svn co https://github.com/Lienol/openwrt/trunk/package/diy/luci-app-adguardhome ../diy/luci-app-adguardhome 
 #svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-app-adguardhome package/luci-app-adguardhome
-#svn co https://github.com/kenzok8/openwrt-packages/trunk/adguardhome package/adguardhome
+#svn co https://github.com/kenzok8/openwrt-packages/trun\\wsl.localhost\Ubuntu\home\zhz\ax6\config\Config-kernel.ink/adguardhome package/adguardhome
 
-echo '下载pushbot'
-git clone https://github.com/zzsj0928/luci-app-pushbot.git package/luci-app-pushbot
+#echo '下载pushbot'
+#git clone https://github.com/zzsj0928/luci-app-pushbot.git package/luci-app-pushbot
 
 echo '添加smartdns'
 svn co https://github.com/kenzok8/openwrt-packages/trunk/smartdns package/smartdns
