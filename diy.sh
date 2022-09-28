@@ -33,10 +33,10 @@ sed -i '/CONFIG_CPU_FREQ_GOV_ONDEMAND=y/a\CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y' targe
 
 
 #echo '删除旧版argon,链接新版'
-rm -rf ./package/lean/luci-theme-argon
-git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon ../diy/luci-theme-argon
-git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config ../diy/luci-app-argon-config
-ln -s ../../../luci-theme-argon ./package/lean/
+#rm -rf ./package/lean/luci-theme-argon
+#git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon ../diy/luci-theme-argon
+#git clone --depth=1 https://github.com/jerrykuku/luci-app-argon-config ../diy/luci-app-argon-config
+#ln -s ../../../luci-theme-argon ./package/lean/
 
 echo '下载ServerChan'
 git clone https://github.com/tty228/luci-app-serverchan ../diy/luci-app-serverchan
