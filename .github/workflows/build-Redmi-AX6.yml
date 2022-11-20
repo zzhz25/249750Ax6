@@ -71,16 +71,19 @@ jobs:
       run: |
         cd openwrt
         ./scripts/feeds install -a
-        ./scripts/feeds install -a
+        
+    - name: Install feeds1
+      run: |
+        cd openwrt
         ./scripts/feeds install -f
-        ./scripts/feeds update -i -f
-        ./scripts/feeds install -a -f
+            
             
     - name: Load custom configuration
       run: |
         cp .config ./openwrt/.config
         chmod +x 5.15.sh
         chmod +x diy.sh
+        cp 5.15.sh openwrt
         cd openwrt
         ../diy.sh
         make defconfig
