@@ -13,6 +13,12 @@ on:
       - main
   schedule:
     - cron: 0 9 * * */2
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
   workflow_call:
 jobs:
   build:
@@ -68,7 +74,12 @@ jobs:
       run: |
         cd openwrt 
         cp ../feeds.conf.default ./feeds.conf.default
-
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
