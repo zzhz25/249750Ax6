@@ -51,33 +51,30 @@ jobs:
 
     - name: Clone source code
       run: |
-        git clone https://github.com/Cathgao/openwrt lede
+        git clone https://github.com/openwrt/openwrt openwrt
 
     - name: Cache
       uses: klever1988/cachewrtbuild@main
       with:
         ccache: 'true'
-        prefix: ${{ github.workspace }}/lede
+        prefix: ${{ github.workspace }}/openwrt
 
     - name: enable magic
       run: |
-        cd lede 
-        echo 'src-git helloworld https://github.com/fw876/helloworld'>>./feeds.conf.default
-        echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
-        sed -i '$a src-git-full kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-        sed -i '$a src-git-full small https://github.com/kenzok8/small' feeds.conf.default
+        cd openwrt 
+        echo 'src-git kiddin9 https://github.com/kiddin9/openwrt-packages.git;master'>>./feeds.conf.default
 
     - name: Update feeds
-      run: cd lede && ./scripts/feeds update -a
+      run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd lede && ./scripts/feeds install -a
-
+      run: cd openwrt && ./scripts/feeds install -a && ./scripts/feeds install -f
+            
     - name: Load custom configuration
       run: |
-        cp .config ./lede/.config
+        cp .config ./openwrt/.config
         chmod +x diy.sh
-        cd lede
+        cd openwrt
         ../diy.sh
         make defconfig
 
@@ -90,7 +87,7 @@ jobs:
 
     - name: Build
       run: |
-        cd lede
+        cd openwrt
         echo -e "$(nproc) thread build."
         make -j$(nproc) 
         rm -rf ./bin/targets/ipq807x/generic/packages
