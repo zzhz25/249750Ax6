@@ -85,8 +85,8 @@ cp -f ../coremark.sh feeds/packages/utils/coremark/
 echo 'refresh feeds'
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-echo '首页增加CPU频率动态显示'
-cp -f ../diy/mod-index.htm ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
+#echo '首页增加CPU频率动态显示'
+#cp -f ../diy/mod-index.htm ./feeds/luci/modules/luci-mod-admin-full/luasrc/view/admin_status/index.htm
 
 #echo 'enable magic'
 #echo 'src-git helloworld https://github.com/fw876/helloworld'>>./feeds.conf.default
