@@ -62,7 +62,7 @@ jobs:
     - name: enable magic
       run: |
         cd openwrt 
-        echo 'src-git kiddin9 https://github.com/kiddin9/openwrt-packages.git;master'>>./feeds.conf.default
+        cp ../feeds.conf.default ./feeds.conf.default
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
