@@ -51,7 +51,7 @@ jobs:
 
     - name: Clone source code
       run: |
-        git clone https://github.com/openwrt/openwrt openwrt
+        git clone -b openwrt-22.03 https://github.com/openwrt/openwrt openwrt
 
     - name: Cache
       uses: klever1988/cachewrtbuild@main
@@ -68,8 +68,9 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
-           ./scripts/feeds install -f
+      run: |
+          cd openwrt && ./scripts/feeds install -a
+          ./scripts/feeds install -f
             
     - name: Load custom configuration
       run: |
