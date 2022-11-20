@@ -73,6 +73,7 @@ jobs:
     - name: Load custom configuration
       run: |
         cp .config ./openwrt/.config
+        chmod +x 5.15.sh
         chmod +x diy.sh
         cd openwrt
         ../diy.sh
